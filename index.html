@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YogaConnect - Yoga Community & Job Portal</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--green:#176f49;--light:#f3f8f5;--dark:#123d2c;--accent:#dff2e8;--white:#fff;--shadow:0 10px 30px rgba(18,61,44,.10)}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--light);color:#24332c;line-height:1.5}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+.hidden{display:none!important}
+.navbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e5eee9;box-shadow:0 3px 14px rgba(0,0,0,.05)}
+.nav-inner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:15px 20px;gap:15px}
+.logo{font-size:22px;font-weight:800;color:var(--green)}
+.nav-links{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.nav-links button{background:transparent;padding:9px 12px;color:#29483b;border-radius:8px}
+.nav-links button:hover{background:var(--accent)}
+.btn{padding:11px 17px;border-radius:9px;font-weight:700}
+.btn-primary{background:var(--green);color:white}
+.btn-secondary{background:#e8f2ed;color:var(--green)}
+.btn-danger{background:#fbe8e8;color:#a82c2c}
+.container{max-width:1200px;margin:auto;padding:0 20px}
+.hero{min-height:500px;display:flex;align-items:center;background:linear-gradient(90deg,rgba(10,45,31,.88),rgba(10,45,31,.48)),url("yoga-home-bg.jpg") center/cover}
+.hero-inner{max-width:1200px;width:100%;margin:auto;padding:70px 20px;color:white}
+.hero h1{font-size:clamp(38px,6vw,68px);max-width:700px;line-height:1.05;margin-bottom:20px}
+.hero p{font-size:19px;max-width:650px;margin-bottom:28px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.section{padding:55px 0}
+.section-title{text-align:center;margin-bottom:30px}
+.section-title h2{font-size:32px;color:var(--dark);margin-bottom:8px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.card,.panel,.job-card,.post-card,.profile-card,.tracker-card{background:white;border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid #e6eee9}
+.feature-icon{font-size:35px;margin-bottom:10px}.card h3{color:var(--dark);margin-bottom:8px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.about-image{min-height:330px;border-radius:20px;background:url("yoga-about.jpg") center/cover,#dff2e8}
+.form-page{min-height:100vh;padding:45px 15px;background:linear-gradient(135deg,#eaf7f0,#fff)}
+.form-box{max-width:850px;margin:auto;background:white;padding:30px;border-radius:18px;box-shadow:var(--shadow)}
+.form-box h1{text-align:center;color:var(--dark);margin-bottom:8px}.subtitle{text-align:center;color:#667}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:25px}
+.form-group{margin-bottom:15px}.form-group.full{grid-column:1/-1}
+label{display:block;font-weight:700;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ccdcd4;border-radius:9px;outline:none;background:#fff}
+textarea{resize:vertical;min-height:110px}
+input:focus,select:focus,textarea:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(23,111,73,.08)}
+.radio-row{display:flex;gap:20px;flex-wrap:wrap}.radio-row label{font-weight:normal}.radio-row input{width:auto}
+.preview{width:90px;height:90px;border-radius:50%;object-fit:cover;background:#e8f2ed;display:none}
+.auth-switch{text-align:center;margin-top:18px}.link{color:var(--green);font-weight:700;cursor:pointer}
+.search-box{background:white;padding:20px;border-radius:15px;box-shadow:var(--shadow);display:grid;grid-template-columns:2fr 1fr 1fr auto auto;gap:10px}
+.jobs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:25px}
+.job-card h3{color:var(--green);margin-bottom:10px}.meta{color:#60756b;font-size:14px;margin:5px 0}.job-actions{display:flex;gap:8px;margin-top:15px;flex-wrap:wrap}
+.post-form{display:grid;grid-template-columns:1fr 1fr;gap:15px}.post-form .full{grid-column:1/-1}
+.feed{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.post-card img,.post-card video{width:100%;max-height:330px;object-fit:cover;border-radius:12px;margin:10px 0}
+.post-actions{display:flex;gap:12px;align-items:center;margin-top:10px}.post-actions button{background:#f0f6f3;padding:8px 12px;border-radius:8px}
+.comments{margin-top:12px;border-top:1px solid #e5eee9;padding-top:10px}.comment{padding:7px 0;border-bottom:1px solid #eef3f0;font-size:14px}
+.comment-box{display:flex;gap:7px;margin-top:8px}.comment-box input{padding:9px}
+.profile-wrap{display:grid;grid-template-columns:320px 1fr;gap:25px}.profile-photo{width:160px;height:160px;border-radius:50%;object-fit:cover;display:block;margin:0 auto 15px;background:#e8f2ed}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.info-item{padding:13px;background:#f5f9f7;border-radius:10px}.info-item strong{display:block;color:var(--green);font-size:13px}
+.tracker-list{display:grid;gap:15px}.status{display:inline-block;padding:5px 10px;border-radius:20px;background:#edf4f0;color:var(--green);font-size:13px;font-weight:700}
+.chat-fab{position:fixed;right:25px;bottom:25px;width:60px;height:60px;border-radius:50%;background:var(--green);color:white;font-size:27px;z-index:70;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+.chat-panel{position:fixed;right:25px;bottom:95px;width:min(430px,calc(100vw - 30px));height:520px;background:white;border-radius:18px;box-shadow:0 20px 50px rgba(0,0,0,.25);z-index:69;display:flex;flex-direction:column;overflow:hidden}
+.chat-head{background:var(--green);color:white;padding:16px;display:flex;justify-content:space-between}.chat-body{flex:1;overflow:auto;padding:15px}.chat-msg{padding:10px 12px;background:#f1f6f3;border-radius:10px;margin-bottom:10px}.chat-input{display:flex;gap:8px;padding:12px;border-top:1px solid #ddd}.chat-input input{padding:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:20px;z-index:100}.modal-box{background:white;max-width:700px;width:100%;max-height:90vh;overflow:auto;border-radius:18px;padding:25px}
+footer{background:#123d2c;color:white;text-align:center;padding:25px;margin-top:30px}
+.notice{padding:12px 15px;background:#edf7f1;color:#176f49;border-radius:10px;margin:15px 0}
+.empty{text-align:center;padding:35px;color:#71837a}
+@media(max-width:900px){.cards,.jobs-grid,.feed{grid-template-columns:1fr 1fr}.search-box{grid-template-columns:1fr 1fr}.profile-wrap,.split{grid-template-columns:1fr}}
+@media(max-width:600px){.cards,.jobs-grid,.feed,.form-grid,.post-form,.info-grid,.search-box{grid-template-columns:1fr}.nav-inner{align-items:flex-start;flex-direction:column}.hero{min-height:600px}.hero h1{font-size:42px}}
+
+/* ================= ADVANCED YOGA UI ================= */
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 10% 10%,rgba(180,224,201,.28),transparent 25%),
+    radial-gradient(circle at 90% 20%,rgba(229,242,224,.42),transparent 25%),
+    var(--light);
+  overflow-x:hidden;
+}
+.navbar{backdrop-filter:blur(12px);background:rgba(255,255,255,.92)}
+.logo{letter-spacing:.2px}
+.nav-links button,.btn{transition:transform .25s ease,box-shadow .25s ease,background .25s ease}
+.nav-links button:hover{transform:translateY(-2px)}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(23,111,73,.18)}
+.hero-advanced{
+  min-height:650px;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  background:
+    linear-gradient(90deg,rgba(7,39,27,.94) 0%,rgba(13,71,48,.78) 48%,rgba(13,71,48,.35) 100%),
+    url("https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1800&q=85") center/cover;
+}
+.hero-advanced:before,.hero-advanced:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  animation:floatBlob 8s ease-in-out infinite;
+}
+.hero-advanced:before{width:320px;height:320px;right:-100px;top:-120px}
+.hero-advanced:after{width:230px;height:230px;left:-80px;bottom:-90px;animation-delay:1.5s}
+.hero-advanced .hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+.hero-copy{animation:fadeUp .9s ease both}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;padding:9px 15px;border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.10);border-radius:999px;font-size:13px;font-weight:700;
+  backdrop-filter:blur(10px);margin-bottom:18px
+}
+.hero-advanced h1{max-width:760px;text-shadow:0 8px 30px rgba(0,0,0,.22)}
+.hero-advanced p{max-width:680px}
+.hero-image-stack{position:relative;min-height:410px;animation:fadeRight 1s ease .15s both}
+.hero-photo{
+  position:absolute;overflow:hidden;border:7px solid rgba(255,255,255,.92);
+  box-shadow:0 25px 55px rgba(0,0,0,.28);border-radius:24px;background:#dff2e8
+}
+.hero-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .7s ease}
+.hero-photo:hover img{transform:scale(1.06)}
+.hero-photo.main{width:320px;height:390px;right:30px;top:5px;transform:rotate(4deg);animation:photoFloat 6s ease-in-out infinite}
+.hero-photo.small{width:210px;height:245px;left:5px;bottom:0;transform:rotate(-7deg);animation:photoFloat 6s ease-in-out 1s infinite}
+.hero-quote{
+  position:absolute;right:0;bottom:25px;background:rgba(255,255,255,.94);color:var(--dark);
+  padding:14px 18px;border-radius:15px;box-shadow:0 15px 30px rgba(0,0,0,.18);
+  font-weight:800;max-width:190px;animation:fadeUp 1s ease .7s both
+}
+.section-glow{position:relative}
+.section-glow:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 0,rgba(23,111,73,.07),transparent 45%)
+}
+.cards .card{
+  position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;
+}
+.cards .card:after{
+  content:"";position:absolute;width:100px;height:100px;border-radius:50%;
+  right:-35px;top:-35px;background:rgba(223,242,232,.75)
+}
+.cards .card:hover{transform:translateY(-8px);box-shadow:0 18px 38px rgba(18,61,44,.15)}
+.feature-icon{position:relative;z-index:1}
+.mini-yoga-gallery{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:22px}
+.mini-yoga-gallery img{width:100%;height:210px;object-fit:cover;border-radius:18px;box-shadow:var(--shadow);transition:transform .45s ease}
+.mini-yoga-gallery img:hover{transform:scale(1.025)}
+.about-image{position:relative;overflow:hidden}
+.about-image:after{
+  content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(23,111,73,.10),transparent)
+}
+.section-title h2{position:relative}
+.section-title h2:after{
+  content:"";display:block;width:55px;height:3px;background:var(--green);
+  border-radius:5px;margin:10px auto 0
+}
+.post-card,.job-card,.profile-card,.tracker-card,.panel{
+  transition:transform .3s ease,box-shadow .3s ease;
+}
+.post-card:hover,.job-card:hover,.tracker-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(18,61,44,.14)}
+.chat-fab{animation:pulseChat 2.8s ease-in-out infinite}
+.form-box{animation:fadeUp .55s ease both}
+.profile-card{position:relative;overflow:hidden}
+.profile-card:before{
+  content:"";position:absolute;inset:0 0 auto;height:80px;
+  background:linear-gradient(135deg,#dff2e8,#f7fbf9);z-index:0
+}
+.profile-card>*{position:relative;z-index:1}
+.profile-photo{border:5px solid white;box-shadow:0 10px 25px rgba(0,0,0,.13)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeRight{from{opacity:0;transform:translateX(35px)}to{opacity:1;transform:translateX(0)}}
+@keyframes photoFloat{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes floatBlob{0%,100%{transform:translate(0,0)}50%{transform:translate(-18px,20px)}}
+@keyframes pulseChat{0%,100%{box-shadow:0 10px 25px rgba(0,0,0,.20),0 0 0 0 rgba(23,111,73,.25)}50%{box-shadow:0 10px 25px rgba(0,0,0,.20),0 0 0 12px rgba(23,111,73,0)}}
+@media(max-width:900px){
+ .hero-advanced .hero-inner{grid-template-columns:1fr}
+ .hero-image-stack{min-height:390px;max-width:560px;width:100%;margin:auto}
+}
+@media(max-width:600px){
+ .hero-advanced{min-height:720px}
+ .hero-advanced .hero-inner{padding-top:50px;padding-bottom:50px}
+ .hero-photo.main{width:245px;height:300px;right:5px}
+ .hero-photo.small{width:165px;height:200px;left:0}
+ .hero-quote{right:5px;bottom:5px;font-size:13px}
+ .mini-yoga-gallery{grid-template-columns:1fr}
+}
+
+
+/* ===== YOGACONNECT PREMIUM PAGE UI ===== */
+:root{
+  --green:#176f49;--green2:#0d5b3b;--mint:#e6f6ee;--cream:#f8fbf9;
+  --ink:#123d2c;--muted:#667970;--gold:#c9a85a;
+}
+body{
+  background:
+    radial-gradient(circle at 5% 15%,rgba(130,205,165,.18),transparent 28%),
+    radial-gradient(circle at 95% 75%,rgba(201,168,90,.10),transparent 25%),
+    #f5faf7;
+}
+.navbar{box-shadow:0 8px 30px rgba(18,61,44,.08);border-bottom:1px solid rgba(23,111,73,.10)}
+.nav-inner{padding-top:13px;padding-bottom:13px}
+.logo{font-size:23px;text-shadow:0 2px 10px rgba(23,111,73,.12)}
+.nav-links button{position:relative}
+.nav-links button:after{content:"";position:absolute;left:12px;right:12px;bottom:3px;height:2px;border-radius:5px;background:var(--green);transform:scaleX(0);transition:.25s}
+.nav-links button:hover:after{transform:scaleX(1)}
+
+.section{position:relative}
+.section:before{
+  content:"";position:absolute;width:190px;height:190px;border-radius:50%;
+  right:-90px;top:15px;background:rgba(23,111,73,.045);filter:blur(2px);pointer-events:none
+}
+.section-title h2{font-weight:800;letter-spacing:-.5px}
+.section-title p{color:var(--muted)}
+
+.form-page{
+  position:relative;display:flex;align-items:center;
+  background:
+    linear-gradient(135deg,rgba(8,55,37,.88),rgba(23,111,73,.55)),
+    url("https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=1800&q=85") center/cover fixed;
+  overflow:hidden;
+}
+.form-page:before,.form-page:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.10);
+  animation:floatBlob 9s ease-in-out infinite;pointer-events:none
+}
+.form-page:before{width:360px;height:360px;right:-100px;top:-100px}
+.form-page:after{width:220px;height:220px;left:-70px;bottom:-80px;animation-delay:2s}
+.form-box{
+  position:relative;z-index:2;max-width:900px;width:100%;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 30px 80px rgba(0,0,0,.22);
+  animation:formIn .7s cubic-bezier(.2,.8,.2,1) both;
+}
+.form-box h1{font-size:34px}
+.form-box h1:after{
+  content:"";display:block;width:55px;height:3px;border-radius:4px;
+  background:var(--green);margin:10px auto 0
+}
+.form-grid .form-group{animation:fieldIn .5s ease both}
+.form-grid .form-group:nth-child(2){animation-delay:.03s}
+.form-grid .form-group:nth-child(3){animation-delay:.06s}
+.form-grid .form-group:nth-child(4){animation-delay:.09s}
+.form-grid .form-group:nth-child(5){animation-delay:.12s}
+input,select,textarea{transition:.25s;border:1px solid #cdded6}
+input:hover,select:hover,textarea:hover{border-color:#9bc7b2}
+input:focus,select:focus,textarea:focus{
+  transform:translateY(-1px);border-color:var(--green);
+  box-shadow:0 0 0 4px rgba(23,111,73,.10),0 8px 20px rgba(23,111,73,.07)
+}
+.radio-row{
+  padding:12px 14px;background:#f4faf7;border-radius:12px;border:1px solid #e1eee7
+}
+.radio-row label{padding:7px 10px;border-radius:9px;transition:.2s}
+.radio-row label:hover{background:#e1f3e9}
+
+.search-box{
+  position:relative;overflow:hidden;padding:24px;
+  background:linear-gradient(135deg,rgba(255,255,255,.97),rgba(239,249,244,.97));
+  border:1px solid #deece5;box-shadow:0 18px 45px rgba(18,61,44,.11);
+}
+.search-box:before{
+  content:"🔎";position:absolute;right:18px;top:7px;font-size:58px;opacity:.06;
+  transform:rotate(-15deg)
+}
+.jobs-grid{align-items:stretch}
+.job-card{
+  position:relative;overflow:hidden;padding:24px;
+  background:linear-gradient(160deg,#fff 0%,#f7fbf9 100%);
+  border:1px solid #deebe5
+}
+.job-card:before{
+  content:"🧘";position:absolute;right:-8px;top:-14px;font-size:70px;opacity:.045;
+  transform:rotate(12deg)
+}
+.job-card h3{font-size:20px}
+.job-card .meta{padding:3px 0}
+.job-actions .btn{flex:0 0 auto}
+
+.tracker-list{grid-template-columns:repeat(2,1fr)}
+.tracker-card{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#fff,#f2faf6);
+  border-left:5px solid var(--green);
+}
+.tracker-card:after{
+  content:"✓";position:absolute;right:18px;top:12px;font-size:65px;
+  color:rgba(23,111,73,.06);font-weight:900
+}
+.status{box-shadow:0 4px 12px rgba(23,111,73,.08)}
+
+.profile-wrap{align-items:start}
+.profile-card{
+  background:linear-gradient(145deg,#fff,#eff8f3);
+  box-shadow:0 22px 55px rgba(18,61,44,.12)
+}
+.profile-card h2{font-size:26px}
+.info-item{transition:.25s}
+.info-item:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(18,61,44,.07)}
+
+.modal{backdrop-filter:blur(5px)}
+.modal-box{
+  background:linear-gradient(145deg,#fff,#f6fbf8);
+  box-shadow:0 30px 80px rgba(0,0,0,.30);
+  animation:modalIn .35s ease both
+}
+
+footer{background:linear-gradient(135deg,#0d3b2a,#123d2c);position:relative;overflow:hidden}
+footer:before{content:"🧘  ✦  🌿  ✦  🧘";display:block;opacity:.12;font-size:30px;margin-bottom:5px;letter-spacing:15px}
+
+@keyframes formIn{from{opacity:0;transform:translateY(35px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes fieldIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes modalIn{from{opacity:0;transform:scale(.94) translateY(15px)}to{opacity:1;transform:none}}
+
+@media(max-width:900px){
+  .tracker-list{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .form-box{padding:22px 16px}
+  .form-box h1{font-size:28px}
+  .search-box{padding:16px}
+}
+
+@media(max-width:700px){.form-box>div[style*="grid-template-columns:1fr 1.25fr"]{grid-template-columns:1fr!important}.form-box>div[style*="grid-template-columns:1fr 1.25fr"]>div{padding:25px 20px!important}}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<div id="modal" class="modal hidden"><div class="modal-box" id="modalContent"></div></div>
+
+<script>
+const KEY={users:'yc_users',session:'yc_session',jobs:'yc_jobs',apps:'yc_apps',posts:'yc_posts',questions:'yc_questions'};
+const demoJobs=[
+ {id:'j1',title:'Hatha Yoga Teacher',company:'Serenity Yoga Studio',location:'Thiruvananthapuram, India',type:'Full-time',salary:'₹25,000 - ₹35,000',category:'Hatha Yoga',description:'Teach Hatha yoga classes and guide students safely.',requirements:'Yoga certification, 2+ years experience'},
+ {id:'j2',title:'Vinyasa Yoga Instructor',company:'Wellness Flow Center',location:'Dubai, UAE',type:'Full-time',salary:'AED 5,000 - 7,000',category:'Vinyasa Yoga',description:'Lead dynamic Vinyasa sessions for beginners and advanced students.',requirements:'RYT certification, communication skills'},
+ {id:'j3',title:'Kids Yoga Trainer',company:'Little Lotus',location:'Kochi, India',type:'Part-time',salary:'₹20,000 - ₹30,000',category:'Kids Yoga',description:'Conduct fun and safe yoga sessions for children.',requirements:'Kids yoga experience preferred'},
+ {id:'j4',title:'Online Yoga Teacher',company:'Global Yoga Hub',location:'Remote, Worldwide',type:'Online',salary:'$800 - $1,500',category:'Online Yoga',description:'Teach live online yoga classes to international students.',requirements:'Stable internet, yoga qualification'}
+];
+
+function get(k,def=[]){try{return JSON.parse(localStorage.getItem(k))??def}catch(e){return def}}
+function set(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function current(){return get(KEY.session,null)}
+function user(){
+ let s=current();
+ if(!s||!s.id)return null;
+ return get(KEY.users,[]).find(u=>u.id===s.id)||null;
+}
+function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function img(src){return src||'data:image/svg+xml;charset=UTF-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><rect width="100%" height="100%" fill="#dff2e8"/><text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" font-size="70">🧘</text></svg>')}
+
+function seed(){
+ if(!localStorage.getItem(KEY.jobs))set(KEY.jobs,demoJobs);
+ if(!localStorage.getItem(KEY.apps))set(KEY.apps,[]);
+ if(!localStorage.getItem(KEY.posts))set(KEY.posts,[]);
+ if(!localStorage.getItem(KEY.questions))set(KEY.questions,[
+  {id:'q1',name:'Yoga Community',text:'What is a good yoga routine for beginners?',replies:[{name:'Community Member',text:'Start with gentle stretching, breathing and basic asanas.'}]}
+ ]);
+}
+seed();
+
+function nav(){
+ let u=user();
+ return `<nav class="navbar"><div class="nav-inner">
+ <div class="logo">🧘 YogaConnect</div>
+ <div class="nav-links">
+ <button onclick="showPage('home')">Home</button>
+ <button onclick="showPage('jobs')">Jobs</button>
+  ${u&&u.registered?`<button onclick="showPage('profile')">Profile</button>${u.role==='employee'?`<button onclick="showPage('tracker')">Applications</button>`:''}`:''}
+ ${u&&u.role==='employer'&&u.registered?`<button onclick="showPage('manage')">Employer</button>`:''}
+ ${u?`<button class="btn btn-danger" onclick="logout()">Logout</button>`:`<button onclick="showPage('login')">Login</button>`}
+ </div></div></nav>`;
+}
+function layout(content){document.getElementById('app').innerHTML=nav()+content+`<footer>© 2026 YogaConnect · Yoga Teacher Training & Job Portal</footer>`}
+
+function showPage(p){
+ if(p==='home')renderHome();
+ if(p==='jobs')renderJobs();
+ if(p==='community')renderCommunity();
+ if(p==='profile'){if(!user()||!user().registered)return showPage('home');renderProfile();}
+ if(p==='tracker'){if(!user()||!user().registered||user().role!=='employee')return showPage('home');renderTracker();}
+ if(p==='manage'){if(!user()||!user().registered||user().role!=='employer')return showPage('home');renderManage();}
+ if(p==='login')renderLogin();
+ if(p==='signup')renderSignup();
+ if(p==='register'){if(!user())return showPage('login');renderRegister(true);}
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function renderHome(){
+ const posts=get(KEY.posts,[]);
+ layout(`<section class="hero-advanced">
+   <div class="hero-inner">
+     <div class="hero-copy">
+       <div class="hero-badge">🧘 GLOBAL YOGA COMMUNITY • TRAIN • TEACH • GROW</div>
+       <h1>Find Your Perfect Yoga Match</h1>
+       <p>Connect yoga teachers, wellness professionals, studios and employers through one beautiful professional global community.</p>
+       <div class="hero-actions">
+         <button class="btn btn-primary" onclick="showPage('jobs')">🔎 Find Yoga Jobs</button>
+         <button class="btn btn-secondary" onclick="showPage('register')">👤 Register</button>
+       </div>
+     </div>
+     <div class="hero-image-stack">
+       <div class="hero-photo main">
+         <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=800&q=85" alt="Yoga practice">
+       </div>
+       <div class="hero-photo small">
+         <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=85" alt="Meditation">
+       </div>
+       <div class="hero-quote">“Breathe • Move • Connect • Grow” 🌿</div>
+     </div>
+   </div>
+ </section>
+
+ <section class="section section-glow"><div class="container">
+   <div class="section-title"><h2>Everything You Need for Your Yoga Career</h2><p>A complete platform for learning, networking, hiring and sharing.</p></div>
+   <div class="cards">
+     <div class="card"><div class="feature-icon">💼</div><h3>Global Job Search</h3><p>Find yoga opportunities by title, location, category and employment type.</p></div>
+     <div class="card"><div class="feature-icon">👤</div><h3>Professional Profile</h3><p>Create, update and showcase your yoga experience and qualifications.</p></div>
+     <div class="card"><div class="feature-icon">📸</div><h3>Yoga Community</h3><p>Share yoga photos and videos from your Edit Profile area and connect publicly.</p></div>
+     <div class="card"><div class="feature-icon">📋</div><h3>Application Tracker</h3><p>Employees can apply for jobs and follow accepted, rejected or pending applications.</p></div>
+   </div>
+ </div></section>
+
+ <section class="section"><div class="container split">
+   <div>
+     <div class="section-title" style="text-align:left;margin-bottom:10px"><h2 style="text-align:left">A Community Built Around Yoga</h2></div>
+     <p style="margin-bottom:18px">Whether you are a yoga teacher looking for your next opportunity or an employer searching for talented professionals, YogaConnect brings everything together.</p>
+     <button class="btn btn-primary" onclick="showPage('register')">Register & Start Your Journey</button>
+     <div class="mini-yoga-gallery">
+       <img src="https://images.unsplash.com/photo-1545205597-3d9d02c29597?auto=format&fit=crop&w=800&q=85" alt="Yoga pose">
+       <img src="https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=800&q=85" alt="Yoga meditation">
+     </div>
+   </div>
+   <div class="about-image" style="background-image:url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=1000&q=85')"></div>
+ </div></section>
+
+ <section class="section section-glow"><div class="container">
+   <div class="section-title"><h2>🌿 Public Yoga Posts</h2><p>Photos and videos shared by registered employees and employers.</p></div>
+   <div id="homeFeed" class="feed">${renderPosts(posts)}</div>
+ </div></section>
+
+ <button class="chat-fab" onclick="toggleChat()" aria-label="Public discussion">💬</button>
+ <div id="chatPanel" class="chat-panel hidden">
+   <div class="chat-head"><strong>🌿 Public Yoga Discussion</strong><button onclick="toggleChat()" style="background:none;color:white;font-size:22px">×</button></div>
+   <div id="chatBody" class="chat-body"></div>
+   <div class="chat-input"><input id="chatInput" placeholder="Ask a yoga question..." onkeydown="if(event.key==='Enter')postQuestion()"><button class="btn btn-primary" onclick="postQuestion()">Post</button></div>
+ </div>`);
+}
+function renderLogin(){
+  document.getElementById('app').innerHTML=`<div class="form-page"><div class="form-box" style="max-width:980px">
+  <div style="display:grid;grid-template-columns:1fr 1.25fr;gap:0;overflow:hidden;border-radius:18px">
+    <div style="padding:38px;background:linear-gradient(145deg,#0d5b3b,#176f49);color:white;display:flex;flex-direction:column;justify-content:center">
+      <div style="font-size:58px;margin-bottom:12px">🧘</div>
+      <h1 style="color:white;text-align:left">Welcome Back</h1>
+      <p style="color:rgba(255,255,255,.85);margin-top:14px">Continue your yoga career journey, discover opportunities and connect with the global yoga community.</p>
+      <div style="margin-top:25px;display:grid;gap:10px">
+        <div>✓ Global yoga jobs</div><div>✓ Professional profile</div><div>✓ Application tracking</div>
+      </div>
+    </div>
+    <div style="padding:38px">
+      <h1>Login 🌿</h1><p class="subtitle">Sign in as an employee or employer</p>
+      <form onsubmit="login(event)" class="form-grid">
+      <div class="form-group full"><label>Login as</label><div class="radio-row"><label><input type="radio" name="loginRole" value="employee" checked> Employee / Yoga Teacher</label><label><input type="radio" name="loginRole" value="employer"> Employer</label></div></div>
+      <div class="form-group full"><label>📧 Email</label><input id="loginEmail" type="email" placeholder="Enter your email" required></div>
+      <div class="form-group full"><label>🔒 Password</label><input id="loginPass" type="password" placeholder="Enter your password" required></div>
+      <div class="form-group full"><button class="btn btn-primary" style="width:100%;padding:14px">Login →</button></div></form>
+      <p class="auth-switch">Don't have an account? <span class="link" onclick="showPage('signup')">Create Account</span></p>
+      <p class="auth-switch"><span class="link" onclick="showPage('home')">← Back to Home</span></p>
+    </div>
+  </div></div></div>`;
+}
+function renderSignup(){
+  document.getElementById('app').innerHTML=`<div class="form-page"><div class="form-box" style="max-width:900px">
+  <div style="text-align:center;font-size:48px">🌿</div>
+  <h1>Create Your YogaConnect Account</h1><p class="subtitle">Sign up first, then login to complete your professional registration.</p>
+  <form onsubmit="signup(event)" class="form-grid">
+  <div class="form-group full"><label>👤 Full Name *</label><input id="suName" placeholder="Your full name" required></div>
+  <div class="form-group full"><label>📧 Email *</label><input id="suEmail" type="email" placeholder="you@example.com" required></div>
+  <div class="form-group"><label>🔒 Password *</label><input id="suPass" type="password" minlength="6" placeholder="Minimum 6 characters" required></div>
+  <div class="form-group"><label>✓ Confirm Password *</label><input id="suConfirm" type="password" minlength="6" placeholder="Re-enter password" required></div>
+  <div class="form-group full"><label>Account Type *</label><div class="radio-row"><label><input type="radio" name="signupRole" value="employee" checked> 🧘 Employee / Yoga Teacher</label><label><input type="radio" name="signupRole" value="employer"> 💼 Employer</label></div></div>
+  <div class="form-group full"><button class="btn btn-primary" style="width:100%;padding:14px">Create Account ✨</button></div>
+  </form>
+  <p class="auth-switch">Already have an account? <span class="link" onclick="showPage('login')">Login</span></p>
+  <p class="auth-switch"><span class="link" onclick="showPage('home')">← Back to Home</span></p>
+  </div></div>`;
+}
+function signup(e){
+ e.preventDefault();
+
+ const name=document.getElementById('suName').value.trim();
+ const email=document.getElementById('suEmail').value.trim().toLowerCase();
+ const pass=document.getElementById('suPass').value;
+ const confirm=document.getElementById('suConfirm').value;
+ const roleEl=document.querySelector('input[name="signupRole"]:checked');
+
+ if(!name || !email || !pass || !confirm){
+   alert('Please fill all required fields.');
+   return;
+ }
+
+ if(pass!==confirm){
+   alert('Passwords do not match.');
+   return;
+ }
+
+ if(pass.length<6){
+   alert('Password must contain at least 6 characters.');
+   return;
+ }
+
+ if(!roleEl){
+   alert('Please select an account type.');
+   return;
+ }
+
+ const role=roleEl.value;
+ let users=get(KEY.users,[]);
+
+ // Check email case-insensitively.
+ if(users.some(u=>String(u.email||'').trim().toLowerCase()===email)){
+   alert('An account with this email already exists. Please login with the same account type.');
+   showPage('login');
+   return;
+ }
+
+ const u={
+   id:'u'+Date.now(),
+   role:role,
+   name:name,
+   email:email,
+   password:pass,
+   phone:'',
+   location:'',
+   yogaType:'',
+   experience:'',
+   qualification:'',
+   about:'',
+   photo:'',
+   company:'',
+   registered:false
+ };
+
+ users.push(u);
+ set(KEY.users,users);
+
+ alert('Sign Up successful! Please login using the same email, password and account type.');
+ showPage('login');
+}
+function login(e){
+    e.preventDefault();
+
+    const email = document.getElementById('loginEmail')
+        .value.trim()
+        .toLowerCase();
+
+    const password = document.getElementById('loginPass').value;
+
+    const roleEl =
+        document.querySelector('input[name="loginRole"]:checked');
+
+    if(!roleEl){
+        alert('Please select account type.');
+        return;
+    }
+
+    const role = roleEl.value;
+
+    const users = get(KEY.users, []);
+
+    const foundUser = users.find(u =>
+        String(u.email || '').trim().toLowerCase() === email &&
+        u.password === password &&
+        u.role === role
+    );
+
+    if(!foundUser){
+        alert(
+            'Invalid email, password, or account type.'
+        );
+        return;
+    }
+
+    set(KEY.session, {
+        id: foundUser.id
+    });
+
+    alert('Login successful!');
+
+    if(foundUser.registered){
+        showPage('home');
+    } else {
+        showPage('register');
+    }
+}
+function renderRegister(registerOnly=true){
+ let u=user();
+ if(!u)return showPage('login');
+ document.getElementById('app').innerHTML=`<div class="form-page"><div class="form-box">
+ <div style="text-align:center;font-size:48px">🧘</div><h1>Complete Your Professional Profile</h1><p class="subtitle">Add your yoga experience, qualifications, photo and public posts.</p>
+ <form onsubmit="completeRegistration(event)" class="form-grid">
+ <div class="form-group full"><label>Register as</label><div class="radio-row"><label><input type="radio" name="regRole" value="employee" ${u.role==='employee'?'checked':''} onchange="toggleRegRole()"> Employee / Yoga Teacher</label><label><input type="radio" name="regRole" value="employer" ${u.role==='employer'?'checked':''} onchange="toggleRegRole()"> Employer</label></div></div>
+ <div class="form-group"><label>Full Name *</label><input id="regName" value="${esc(u.name)}" required></div>
+ <div class="form-group"><label>Email *</label><input id="regEmail" type="email" value="${esc(u.email)}" required></div>
+ <div class="form-group"><label>Phone Number *</label><input id="regPhone" value="${esc(u.phone)}" required></div>
+ <div class="form-group"><label>Location *</label><input id="regLocation" value="${esc(u.location)}" placeholder="City, Country" required></div>
+ <div id="teacherFields" class="form-group full ${u.role==='employer'?'hidden':''}"><div class="form-grid">
+ <div class="form-group"><label>Yoga Type</label><select id="regYoga"><option ${u.yogaType==='Hatha'?'selected':''}>Hatha</option><option>Vinyasa</option><option>Ashtanga</option><option>Kundalini</option><option>Power Yoga</option><option>Kids Yoga</option><option>Yin Yoga</option><option>Restorative</option><option>Iyengar</option></select></div>
+ <div class="form-group"><label>Experience</label><input id="regExperience" value="${esc(u.experience)}" placeholder="e.g. 3 years"></div>
+ <div class="form-group full"><label>Qualification</label><input id="regQualification" value="${esc(u.qualification)}" placeholder="e.g. RYT-200, Diploma in Yoga"></div>
+ </div></div>
+ <div id="companyFields" class="form-group full ${u.role==='employee'?'hidden':''}"><label>Company / Studio Name</label><input id="regCompany" value="${esc(u.company)}"></div>
+ <div class="form-group full"><label>About</label><textarea id="regAbout" placeholder="Tell the community about yourself or your organization...">${esc(u.about)}</textarea></div>
+ <div class="form-group"><label>Profile Photo</label><input id="regPhoto" type="file" accept="image/*" onchange="previewPhoto(event)"></div>
+ <div class="form-group"><img id="photoPreview" class="preview" ${u.photo?'src="'+img(u.photo)+'" style="display:block"':''}></div>
+ <div class="form-group full"><label>Public Post Caption</label><textarea id="regPostCaption" placeholder="Write something about your yoga journey, studio, classes or work..."></textarea></div>
+ <div class="form-group full"><label>Public Photos / Videos</label><input id="regPostMedia" type="file" accept="image/*,video/*" multiple><small style="display:block;color:#667;margin-top:6px">You can select multiple photos and videos. They will appear on the Home page public feed after registration.</small></div>
+ <div class="form-group full"><button class="btn btn-primary" style="width:100%">Complete Registration & Publish</button></div>
+ </form>
+ <p class="auth-switch">Registration is available only after login.</p>
+ <p class="auth-switch"><span class="link" onclick="showPage('home')">← Back to Home</span></p>
+ </div></div>`;
+}
+function completeRegistration(e){
+ e.preventDefault();
+ let u=user(); if(!u)return showPage('login');
+
+ let users=get(KEY.users,[]),x=users.find(a=>a.id===u.id);
+ let role=document.querySelector('input[name="regRole"]:checked').value;
+ let file=regPhoto.files[0];
+ let mediaFiles=[...(document.getElementById('regPostMedia')?.files||[])];
+ let caption=(document.getElementById('regPostCaption')?.value||'').trim();
+
+ const finishProfile=(photo)=>{
+   Object.assign(x,{
+     registered:true,
+     role,
+     name:regName.value.trim(),
+     email:regEmail.value.trim().toLowerCase(),
+     phone:regPhone.value.trim(),
+     location:regLocation.value.trim(),
+     yogaType:role==='employee'?regYoga.value:'',
+     experience:role==='employee'?regExperience.value:'',
+     qualification:role==='employee'?regQualification.value:'',
+     about:regAbout.value,
+     company:role==='employer'?regCompany.value:'',
+     photo:photo||x.photo
+   });
+
+   set(KEY.users,users);
+   set(KEY.session,{id:x.id});
+
+   if(mediaFiles.length){
+     const posts=get(KEY.posts,[]);
+     let completed=0;
+
+     mediaFiles.forEach(file=>{
+       const reader=new FileReader();
+       reader.onload=()=>{
+         posts.unshift({
+           id:'p'+Date.now()+Math.random().toString(36).slice(2,7),
+           userId:x.id,
+           authorId:x.id,
+           author:x.name,
+           role:x.role,
+           caption:caption || 'Shared a new yoga post.',
+           media:reader.result,
+           mediaType:file.type.startsWith('video')?'video':'image',
+           likes:0,
+           comments:[]
+         });
+         completed++;
+         if(completed===mediaFiles.length){
+           set(KEY.posts,posts);
+           alert('Registration completed successfully! Your public post(s) are now on the Home page.');
+           showPage('home');
+         }
+       };
+       reader.readAsDataURL(file);
+     });
+   }else{
+     alert('Registration completed successfully!');
+     showPage('home');
+   }
+ };
+
+ if(file){
+   let r=new FileReader();
+   r.onload=()=>finishProfile(r.result);
+   r.readAsDataURL(file);
+ }else{
+   finishProfile('');
+ }
+}
+function toggleRegRole(){let r=document.querySelector('input[name=regRole]:checked').value;teacherFields.classList.toggle('hidden',r!=='employee');companyFields.classList.toggle('hidden',r!=='employer')}
+function previewPhoto(e){let f=e.target.files[0];if(f){let p=document.getElementById('photoPreview');p.src=URL.createObjectURL(f);p.style.display='block'}}
+function register(e){
+ e.preventDefault();
+ completeRegistration(e);
+}
+
+function renderJobs(){
+ let jobs=get(KEY.jobs,demoJobs),u=user();
+ layout(`<section class="section"><div class="container"><div class="section-title"><div style="font-size:42px;margin-bottom:5px">🌍</div><h2>Global Yoga Job Search</h2><p>Discover your next opportunity anywhere in the world.</p></div>
+ <div class="search-box"><input id="jobQ" placeholder="Job title, keyword"><input id="jobLoc" placeholder="City, Country..."><select id="jobCategory"><option value="">All Yoga Types</option><option>Hatha Yoga</option><option>Vinyasa Yoga</option><option>Ashtanga Yoga</option><option>Kundalini Yoga</option><option>Power Yoga</option><option>Kids Yoga</option><option>Yin Yoga</option><option>Restorative Yoga</option><option>Iyengar Yoga</option><option>Prenatal Yoga</option><option>Meditation</option><option>Online Yoga</option><option>Other</option></select><select id="jobType"><option value="">All Types</option><option>Full-time</option><option>Part-time</option><option>Online</option><option>Contract</option></select><button class="btn btn-primary" onclick="filterJobs()">Search</button><button class="btn btn-secondary" onclick="renderJobs()">Reset</button></div>
+ <div id="jobResults" class="jobs-grid"></div></div></section>`);
+ displayJobs(jobs);
+}
+function filterJobs(){
+ let q=(jobQ.value||'').toLowerCase(),l=(jobLoc.value||'').toLowerCase(),c=jobCategory.value,t=jobType.value;
+ let jobs=get(KEY.jobs,demoJobs).filter(j=>(!q||JSON.stringify(j).toLowerCase().includes(q))&&(!l||j.location.toLowerCase().includes(l))&&(!c||j.category===c)&&(!t||j.type===t));
+ displayJobs(jobs);
+}
+function displayJobs(jobs){
+ let el=document.getElementById('jobResults');if(!el)return;
+ el.innerHTML=jobs.length?jobs.map(j=>`<div class="job-card"><h3>${esc(j.title)}</h3><div class="meta">🏢 ${esc(j.company)}</div><div class="meta">📍 ${esc(j.location)}</div><div class="meta">💰 ${esc(j.salary)}</div><div class="meta">🕒 ${esc(j.type)}</div><p style="margin-top:10px">${esc(j.description)}</p><div class="job-actions"><button class="btn btn-secondary" onclick="jobDetails('${j.id}')">Details</button>${user()?.role==='employee'?`<button class="btn btn-primary" onclick="applyJob('${j.id}')">Apply</button>`:''}</div></div>`).join(''):`<div class="empty" style="grid-column:1/-1">No jobs found.</div>`;
+}
+function jobDetails(id){let j=get(KEY.jobs,demoJobs).find(x=>x.id===id);openModal(`<h2>${esc(j.title)}</h2><p><b>Company:</b> ${esc(j.company)}</p><p><b>Location:</b> ${esc(j.location)}</p><p><b>Salary:</b> ${esc(j.salary)}</p><p><b>Type:</b> ${esc(j.type)}</p><hr style="margin:15px 0"><p>${esc(j.description)}</p><p><b>Requirements:</b> ${esc(j.requirements)}</p><br>${user()?.role==='employee'?`<button class="btn btn-primary" onclick="closeModal();applyJob('${j.id}')">Apply for this Job</button>`:''}`)}
+function applyJob(id){
+ let u=user();if(!u)return showPage('login');if(!u.registered)return showPage('register');if(u.role!=='employee')return alert('Only employees can apply.');
+ let apps=get(KEY.apps,[]);if(apps.some(a=>a.jobId===id&&a.userId===u.id))return alert('You have already applied for this job.');
+ let j=get(KEY.jobs,demoJobs).find(x=>x.id===id);apps.push({id:'a'+Date.now(),jobId:id,userId:u.id,employer:j.company,status:'Pending',date:new Date().toLocaleDateString()});set(KEY.apps,apps);alert('Application submitted successfully!');showPage('tracker');
+}
+
+function renderCommunity(){
+ let posts=get(KEY.posts,[]);layout(`<section class="section"><div class="container"><div class="section-title"><h2>🌿 Yoga Community</h2><p>Share your yoga journey with the public community.</p></div>
+ <div class="notice">Public posts are shared from the Profile → Edit Profile section. You can view them here.</div>
+ <div id="feed" class="feed">${renderPosts(posts)}</div></div></section>`);
+}
+function renderPosts(posts){
+ if(!posts.length)return '<div class="empty" style="grid-column:1/-1">No posts yet. Be the first to share something!</div>';
+ return posts.map(p=>`<div class="post-card"><strong>${esc(p.author)}</strong><div class="meta">${esc(p.role||'Yoga Community Member')}</div><p style="margin-top:8px">${esc(p.caption)}</p>${p.media?(p.mediaType==='video'?`<video controls src="${p.media}"></video>`:`<img src="${p.media}" alt="Yoga post">`):''}<div class="post-actions"><button onclick="likePost('${p.id}')">❤️ ${p.likes||0}</button><span>💬 ${(p.comments||[]).length}</span></div><div class="comments">${(p.comments||[]).map(c=>`<div class="comment"><b>${esc(c.name)}:</b> ${esc(c.text)}</div>`).join('')}<div class="comment-box"><input id="c_${p.id}" placeholder="Write a comment..."><button class="btn btn-secondary" onclick="commentPost('${p.id}')">Send</button></div></div></div>`).join('');
+}
+function createPost(e){
+ e.preventDefault();
+ let u=user();if(!u||!u.registered)return showPage('login');
+ let files=[...(document.getElementById('postMedia')?.files||[])];
+ if(!files.length)return alert('Please select at least one photo or video.');
+ let caption=(document.getElementById('postCaption')?.value||'').trim()||'Shared a new yoga post.';
+ saveMultiplePosts(u,files,caption,'community');
+}
+
+function createHomePost(e){
+ e.preventDefault();
+ let u=user();if(!u||!u.registered)return showPage('login');
+ let files=[...(document.getElementById('homePostMedia')?.files||[])];
+ if(!files.length)return alert('Please select at least one photo or video.');
+ let caption=(document.getElementById('homePostCaption')?.value||'').trim()||'Shared a new yoga post.';
+ saveMultiplePosts(u,files,caption,'home');
+}
+
+function saveMultiplePosts(u,files,caption,target){
+ const posts=get(KEY.posts,[]);
+ let completed=0;
+ files.forEach(file=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   posts.unshift({id:'p'+Date.now()+Math.random().toString(36).slice(2,8),userId:u.id,authorId:u.id,author:u.name,role:u.role,caption,media:reader.result,mediaType:file.type.startsWith('video')?'video':'image',likes:0,comments:[]});
+   completed++;
+   if(completed===files.length){
+    set(KEY.posts,posts);
+    alert(files.length===1?'Post published successfully!':'All selected photos/videos were published successfully!');
+    showPage('home');
+   }
+  };
+  reader.readAsDataURL(file);
+ });
+}
+function likePost(id){let posts=get(KEY.posts,[]),p=posts.find(x=>x.id===id);if(!p)return;p.likes=(p.likes||0)+1;set(KEY.posts,posts);renderHome()}
+function commentPost(id){let input=document.getElementById('c_'+id);if(!input||!input.value.trim())return;let posts=get(KEY.posts,[]),p=posts.find(x=>x.id===id),u=user();if(!p)return;p.comments=p.comments||[];p.comments.push({name:u?.name||'Guest',text:input.value.trim()});set(KEY.posts,posts);renderHome()}
+
+function renderProfile(){
+ let u=user();if(!u)return showPage('login');
+ layout(`<section class="section"><div class="container"><div class="profile-wrap">
+ <div class="profile-card" style="text-align:center"><img class="profile-photo" src="${img(u.photo)}"><h2>${esc(u.name)}</h2><p>${u.role==='employee'?'🧘 Yoga Teacher / Employee':'💼 Employer'}</p><br><button class="btn btn-primary" onclick="editProfile()">✏️ Edit Profile</button></div>
+ <div class="panel"><div style="font-size:38px;margin-bottom:6px">✨</div><h2 style="color:var(--dark);margin-bottom:18px">Professional Profile</h2><div class="info-grid">
+ <div class="info-item"><strong>Full Name</strong>${esc(u.name)}</div><div class="info-item"><strong>Email</strong>${esc(u.email)}</div><div class="info-item"><strong>Phone</strong>${esc(u.phone)}</div><div class="info-item"><strong>Location</strong>${esc(u.location)}</div>
+ ${u.role==='employee'?`<div class="info-item"><strong>Yoga Type</strong>${esc(u.yogaType)}</div><div class="info-item"><strong>Experience</strong>${esc(u.experience)}</div><div class="info-item"><strong>Qualification</strong>${esc(u.qualification)}</div>`:`<div class="info-item"><strong>Company / Studio</strong>${esc(u.company)}</div>`}
+ </div><div style="margin-top:18px"><strong>About</strong><p>${esc(u.about||'No description added yet.')}</p></div></div>
+ </div></div></section>`);
+}
+function editProfile(){
+ let u=user();
+ if(!u||!u.registered)return showPage('home');
+ let myPosts=get(KEY.posts,[]).filter(p=>p.userId===u.id || p.authorId===u.id);
+ openModal(`<h2>✏️ Edit Profile</h2>
+ <form class="form-grid" onsubmit="saveProfile(event)">
+  <div class="form-group"><label>Full Name</label><input id="eName" value="${esc(u.name)}" required></div>
+  <div class="form-group"><label>Phone</label><input id="ePhone" value="${esc(u.phone)}" required></div>
+  <div class="form-group"><label>Location</label><input id="eLocation" value="${esc(u.location)}" required></div>
+  ${u.role==='employee'?`<div class="form-group"><label>Yoga Type</label><input id="eYoga" value="${esc(u.yogaType)}"></div><div class="form-group"><label>Experience</label><input id="eExp" value="${esc(u.experience)}"></div><div class="form-group full"><label>Qualification</label><input id="eQual" value="${esc(u.qualification)}"></div>`:`<div class="form-group full"><label>Company / Studio</label><input id="eCompany" value="${esc(u.company)}"></div>`}
+  <div class="form-group full"><label>About</label><textarea id="eAbout">${esc(u.about)}</textarea></div>
+  <div class="form-group full"><label>New Profile Photo</label><input id="ePhoto" type="file" accept="image/*"></div>
+  <div class="form-group full"><button class="btn btn-primary">Save Profile Changes</button></div>
+ </form>
+ <hr style="margin:25px 0;border:0;border-top:1px solid #e5eee9">
+ <h3>📸 Post Photos / Videos</h3>
+ <p style="color:#667;margin:6px 0 15px">You can post again and again. Every post will appear publicly on the Home page.</p>
+ <form class="post-form" onsubmit="createProfilePost(event)">
+  <textarea id="profilePostCaption" class="full" placeholder="Write a caption..."></textarea>
+  <input id="profilePostMedia" class="full" type="file" accept="image/*,video/*" multiple required>
+  <small class="full" style="color:#667">Select one or multiple photos/videos.</small>
+  <button class="btn btn-primary">Publish Post</button>
+ </form>
+ <hr style="margin:25px 0;border:0;border-top:1px solid #e5eee9">
+ <h3>🗑️ My Posts</h3>
+ <div style="margin-top:12px">${myPosts.length?myPosts.map(p=>`<div class="panel" style="margin-bottom:12px;padding:14px;display:flex;gap:12px;align-items:center">${p.media?(p.mediaType==='video'?`<video src="${p.media}" controls style="width:90px;height:70px;object-fit:cover;border-radius:8px"></video>`:`<img src="${p.media}" style="width:90px;height:70px;object-fit:cover;border-radius:8px">`):''}<div style="flex:1"><b>${esc(p.caption||'Yoga post')}</b><div class="meta">❤️ ${p.likes||0} · 💬 ${(p.comments||[]).length}</div></div><button type="button" class="btn btn-danger" onclick="deletePost('${p.id}')">Delete</button></div>`).join(''):`<div class="empty">You have not posted any photos or videos yet.</div>`}</div>`);
+}
+function saveProfile(e){
+ e.preventDefault();
+ let users=get(KEY.users,[]),u=user(),x=users.find(a=>a.id===u.id);
+ if(!x)return;
+ Object.assign(x,{name:eName.value.trim(),phone:ePhone.value.trim(),location:eLocation.value.trim(),about:eAbout.value});
+ if(u.role==='employee')Object.assign(x,{yogaType:eYoga.value,experience:eExp.value,qualification:eQual.value});
+ else x.company=eCompany.value;
+ let file=ePhoto.files[0];
+ const finish=(photo)=>{if(photo)x.photo=photo;set(KEY.users,users);closeModal();renderProfile()};
+ if(file){let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish('');
+}
+function createProfilePost(e){
+ e.preventDefault();
+ let u=user();if(!u||!u.registered)return showPage('login');
+ let files=[...(document.getElementById('profilePostMedia')?.files||[])];
+ if(!files.length)return alert('Please select at least one photo or video.');
+ let caption=(document.getElementById('profilePostCaption')?.value||'').trim()||'Shared a new yoga post.';
+ saveProfilePosts(u,files,caption);
+}
+function saveProfilePosts(u,files,caption){
+ const posts=get(KEY.posts,[]);let completed=0;
+ files.forEach(file=>{
+  const reader=new FileReader();
+  reader.onload=()=>{
+   posts.unshift({id:'p'+Date.now()+Math.random().toString(36).slice(2,8),userId:u.id,authorId:u.id,author:u.name,role:u.role,caption,media:reader.result,mediaType:file.type.startsWith('video')?'video':'image',likes:0,comments:[]});
+   completed++;
+   if(completed===files.length){set(KEY.posts,posts);alert(files.length===1?'Post published successfully!':'All selected photos/videos were published successfully!');closeModal();renderHome();}
+  };
+  reader.readAsDataURL(file);
+ });
+}
+function deletePost(id){
+ let u=user();if(!u)return;
+ let posts=get(KEY.posts,[]),post=posts.find(p=>p.id===id);
+ if(!post)return;
+ if(post.userId!==u.id && post.authorId!==u.id)return alert('You can delete only your own posts.');
+ if(!confirm('Delete this post?'))return;
+ posts=posts.filter(p=>p.id!==id);set(KEY.posts,posts);
+ editProfile();
+}
+
+function renderTracker(){
+ let u=user();if(!u)return showPage('login');let apps=get(KEY.apps,[]).filter(a=>a.userId===u.id),jobs=get(KEY.jobs,demoJobs);
+ layout(`<section class="section"><div class="container"><div class="section-title"><div style="font-size:42px;margin-bottom:5px">📋</div><h2>My Application Tracker</h2><p>Follow every application from submission to decision.</p></div><div class="tracker-list">${apps.length?apps.map(a=>{let j=jobs.find(x=>x.id===a.jobId);return `<div class="tracker-card"><h3>${esc(j?.title||'Job')}</h3><p>🏢 ${esc(j?.company||a.employer)} · 📍 ${esc(j?.location||'')}</p><p>Applied: ${esc(a.date)}</p><span class="status"
+style="
+background:
+${a.status==='Accepted'
+ ? '#d4edda'
+ : a.status==='Rejected'
+ ? '#f8d7da'
+ : '#edf4f0'};
+
+color:
+${a.status==='Accepted'
+ ? '#155724'
+ : a.status==='Rejected'
+ ? '#721c24'
+ : '#176f49'};
+">
+${esc(a.status)}
+</span></div>`}).join(''):'<div class="empty">You have not applied for any jobs yet.</div>'}</div></div></section>`);
+}
+
+function renderManage(){
+ let u=user();if(!u||u.role!=='employer')return showPage('home');
+ let apps=get(KEY.apps,[]),jobs=get(KEY.jobs,demoJobs),mine=jobs.filter(j=>j.employerId===u.id),received=apps.map(a=>({...a,job:jobs.find(j=>j.id===a.jobId),applicant:get(KEY.users,[]).find(x=>x.id===a.userId)})).filter(a=>a.job);
+ layout(`<section class="section"><div class="container"><div class="section-title"><div style="font-size:42px;margin-bottom:5px">💼</div><h2>Employer Dashboard</h2><p>Publish opportunities and manage applications professionally.</p></div>
+ <div class="panel" style="margin-bottom:25px"><h3>Post a Yoga Job</h3><form class="post-form" onsubmit="postJob(event)">
+ <input id="pjTitle" placeholder="Job Title" required><input id="pjCompany" value="${esc(u.company||u.name)}" placeholder="Company / Studio" required>
+ <input id="pjLocation" placeholder="City, Country / Remote" required><input id="pjSalary" placeholder="Salary range" required>
+ <select id="pjType"><option>Full-time</option><option>Part-time</option><option>Online</option><option>Contract</option></select><select id="pjCategory" required><option value="">Select Yoga Type</option><option>Hatha Yoga</option><option>Vinyasa Yoga</option><option>Ashtanga Yoga</option><option>Kundalini Yoga</option><option>Power Yoga</option><option>Kids Yoga</option><option>Yin Yoga</option><option>Restorative Yoga</option><option>Iyengar Yoga</option><option>Prenatal Yoga</option><option>Meditation</option><option>Online Yoga</option><option>Other</option></select>
+ <textarea id="pjDesc" class="full" placeholder="Job description" required></textarea><input id="pjReq" class="full" placeholder="Requirements"><button class="btn btn-primary">Post Job</button></form></div>
+ <h3 style="margin-bottom:15px">Applications Received</h3><div class="tracker-list">${received.length?received.map(a=>`<div class="tracker-card"><h3>${esc(a.job.title)}</h3><p><b>Applicant:</b> ${esc(a.applicant?.name||'Unknown')} · ${esc(a.applicant?.email||'')}</p><p>📍 ${esc(a.applicant?.location||'')} · 🧘 ${esc(a.applicant?.yogaType||'')}</p><p>Status: <p>Status:
+<span class="status"
+style="
+background:
+${a.status==='Accepted'
+ ? '#d4edda'
+ : a.status==='Rejected'
+ ? '#f8d7da'
+ : '#edf4f0'};
+
+color:
+${a.status==='Accepted'
+ ? '#155724'
+ : a.status==='Rejected'
+ ? '#721c24'
+ : '#176f49'};
+">
+${esc(a.status)}
+</span>
+</p></p><div class="job-actions">
+
+${a.status === 'Pending' ? `
+
+<button class="btn btn-primary"
+onclick="updateApplication('${a.id}','Accepted')">
+✅ Accept
+</button>
+
+<button class="btn btn-danger"
+onclick="updateApplication('${a.id}','Rejected')">
+❌ Reject
+</button>
+
+` : `
+
+<strong style="
+color:${a.status==='Accepted' ? 'green' : 'red'};
+font-size:16px;
+">
+${a.status==='Accepted'
+ ? '✅ Accepted'
+ : '❌ Rejected'}
+</strong>
+
+`}
+
+<button class="btn btn-secondary"
+onclick="viewApplicant('${a.applicant?.id}')">
+View Profile
+</button>
+
+</div></div>`).join(''):'<div class="empty">No applications received yet.</div>'}</div></div></section>`);
+}
+function postJob(e){e.preventDefault();let u=user(),jobs=get(KEY.jobs,demoJobs);jobs.push({id:'j'+Date.now(),title:pjTitle.value,company:pjCompany.value,location:pjLocation.value,salary:pjSalary.value,type:pjType.value,category:pjCategory.value,description:pjDesc.value,requirements:pjReq.value,employerId:u.id});set(KEY.jobs,jobs);alert('Job posted successfully!');renderManage()}
+function updateApplication(id,status){
+
+    let apps = get(KEY.apps,[]);
+    let app = apps.find(x => x.id === id);
+
+    if(!app){
+        alert('Application not found');
+        return;
+    }
+
+    app.status = status;
+    app.updatedAt = new Date().toLocaleString();
+
+    set(KEY.apps,apps);
+
+    alert(
+        status === 'Accepted'
+        ? 'Application Accepted Successfully!'
+        : 'Application Rejected Successfully!'
+    );
+
+    renderManage();
+}
+function viewApplicant(id){let u=get(KEY.users,[]).find(x=>x.id===id);if(!u)return;openModal(`<h2>${esc(u.name)}</h2><p><b>Location:</b> ${esc(u.location)}</p><p><b>Yoga Type:</b> ${esc(u.yogaType)}</p><p><b>Experience:</b> ${esc(u.experience)}</p><p><b>Qualification:</b> ${esc(u.qualification)}</p><p><b>About:</b> ${esc(u.about)}</p><img src="${img(u.photo)}" style="width:130px;height:130px;object-fit:cover;border-radius:50%;margin-top:15px">`)}
+
+function toggleChat(){document.getElementById('chatPanel').classList.toggle('hidden');renderQuestions()}
+function renderQuestions(){let qs=get(KEY.questions,[]);document.getElementById('chatBody').innerHTML=qs.map(q=>`<div class="chat-msg"><b>${esc(q.name)}</b><p>${esc(q.text)}</p>${(q.replies||[]).map(r=>`<div style="margin:7px 0 0 12px;padding-left:10px;border-left:3px solid #b9daca"><b>${esc(r.name)}:</b> ${esc(r.text)}</div>`).join('')}<div class="comment-box"><input id="r_${q.id}" placeholder="Reply..."><button class="btn btn-secondary" onclick="replyQuestion('${q.id}')">Reply</button></div></div>`).join('')}
+function postQuestion(){let input=document.getElementById('chatInput');if(!input.value.trim())return;let qs=get(KEY.questions,[]),u=user();qs.unshift({id:'q'+Date.now(),name:u?.name||'Guest',text:input.value.trim(),replies:[]});set(KEY.questions,qs);input.value='';renderQuestions()}
+function replyQuestion(id){let input=document.getElementById('r_'+id);if(!input.value.trim())return;let qs=get(KEY.questions,[]),q=qs.find(x=>x.id===id),u=user();q.replies=q.replies||[];q.replies.push({name:u?.name||'Community Member',text:input.value.trim()});set(KEY.questions,qs);renderQuestions()}
+
+function openModal(html){modalContent.innerHTML=html+'<button class="btn btn-secondary" style="margin-top:18px" onclick="closeModal()">Close</button>';modal.classList.remove('hidden')}
+function closeModal(){modal.classList.add('hidden')}
+function logout(){localStorage.removeItem(KEY.session);showPage('home')}
+showPage('home');
+</script>
+</body>
+</html>
