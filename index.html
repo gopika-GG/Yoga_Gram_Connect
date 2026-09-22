@@ -801,7 +801,7 @@ function editProfile(){
  </form>
  <hr style="margin:25px 0;border:0;border-top:1px solid #e5eee9">
  <h3>🗑️ My Posts</h3>
- <div style="margin-top:12px">${myPosts.length?myPosts.map(p=>`<div class="panel" style="margin-bottom:12px;padding:14px;display:flex;gap:12px;align-items:center">${p.media?(p.mediaType==='video'?`<video src="${p.media}" controls style="width:90px;height:70px;object-fit:cover;border-radius:8px"></video>`:`<img src="${p.media}" style="width:90px;height:70px;object-fit:cover;border-radius:8px">`):''}<div style="flex:1"><b>${esc(p.caption||'Yoga post')}</b><div class="meta">❤️ ${p.likes||0} · 💬 ${(p.comments||[]).length}</div></div><button type="button" class="btn btn-danger" onclick="deletePost('${p.id}')">Delete</button></div>`).join(''):`<div class="empty">You have not posted any photos or videos yet.</div>`}</div>`);
+ <div style="margin-top:12px">${myPosts.length?myPosts.map(p=>`<div class="panel" style="margin-bottom:12px;padding:14px;display:flex;gap:12px;align-items:center">${p.media?(p.mediaType==='video'?`<video src="${p.media}" controls style="width:90px;height:70px;object-fit:cover;border-radius:8px"></video>`:`<img src="${p.media}" style="width:90px;height:70px;object-fit:cover;border-radius:8px">`):''}<div style="flex:1"><b>${esc(p.caption||'Yoga post')}</b><div class="meta">❤️ ${p.likes||0} · 💬 ${(p.comments||[]).length}</div></div><button type="button" class="btn btn-danger" onclick="deletePost('${p.id}')">Delete</button></div>`).join(''):`<div class="empty">You have not posted any photos yet.</div>`}</div>`);
 }
 function saveProfile(e){
  e.preventDefault();
