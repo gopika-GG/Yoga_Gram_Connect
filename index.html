@@ -611,7 +611,7 @@ function renderRegister(registerOnly=true){
  <div class="form-group"><label>Profile Photo</label><input id="regPhoto" type="file" accept="image/*" onchange="previewPhoto(event)"></div>
  <div class="form-group"><img id="photoPreview" class="preview" ${u.photo?'src="'+img(u.photo)+'" style="display:block"':''}></div>
  <div class="form-group full"><label>Public Post Caption</label><textarea id="regPostCaption" placeholder="Write something about your yoga journey, studio, classes or work..."></textarea></div>
- <div class="form-group full"><label>Public Photos </label><input id="regPostMedia" type="file" accept="image/*,video/*" multiple><small style="display:block;color:#667;margin-top:6px">You can select multiple photos. They will appear on the Home page public feed after registration.</small></div>
+ <div class="form-group full"><label>Public Photos/ Videos </label><input id="regPostMedia" type="file" accept="image/*,video/*" multiple><small style="display:block;color:#667;margin-top:6px">You can select multiple photos. They will appear on the Home page public feed after registration.</small></div>
  <div class="form-group full"><button class="btn btn-primary" style="width:100%">Complete Registration & Publish</button></div>
  </form>
  <p class="auth-switch">Registration is available only after login.</p>
@@ -791,7 +791,7 @@ function editProfile(){
   <div class="form-group full"><button class="btn btn-primary">Save Profile Changes</button></div>
  </form>
  <hr style="margin:25px 0;border:0;border-top:1px solid #e5eee9">
- <h3>📸 Post Photos </h3>
+ <h3>📸 Post Photos / Videos </h3>
  <p style="color:#667;margin:6px 0 15px">You can post again and again. Every post will appear publicly on the Home page.</p>
  <form class="post-form" onsubmit="createProfilePost(event)">
   <textarea id="profilePostCaption" class="full" placeholder="Write a caption..."></textarea>
